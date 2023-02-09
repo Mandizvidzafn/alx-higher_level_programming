@@ -2,9 +2,10 @@
 """class Square"""
 
 class Square():
-
-    """initialization"""
+    """square class with size"""
+    
     def __init__(self, size=0):
+        """initilization and setting conditions"""
         if (type(size) is not int):
             raise TypeError("size must be an integer")
         elif (size < 0):

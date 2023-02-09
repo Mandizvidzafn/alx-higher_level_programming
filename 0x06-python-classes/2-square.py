@@ -1,13 +1,17 @@
-#!/usr/bin//python3
-"""class Square"""
+#!/usr/bin/python3
+""" defines a class named Square """
 
-class Square():
-    """square class with size"""
-    
+
+class Square:
+    """ defines a function named __init__ """
     def __init__(self, size=0):
-        """initilization and setting conditions"""
-        if (type(size) is not int):
+        """ if statement """
+        if type(size) != int:
+            """ raise an error """
             raise TypeError("size must be an integer")
-        elif (size < 0):
+        elif size < 0:
+            """ raise an error """
             raise ValueError("size must be >= 0")
-        self.__size = size
+        else:
+            """ initialize __size of self with size """
+            self.__size = size

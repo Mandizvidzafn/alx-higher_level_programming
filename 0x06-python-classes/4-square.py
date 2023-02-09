@@ -1,14 +1,11 @@
 #!/usr/bin/python3
-"""Square class"""
+"""class Square that defines a square"""
+
 
 class Square():
+    """square class with it's size and proper validation"""
 
-    """initialization"""
     def __init__(self, size=0):
-        if (type(value) is not int):
-            raise TypeError("size must be an integer")
-        elif value < 0:
-            raise ValueError("size must be >= 0")
         self.__size = size
 
     @property
@@ -19,7 +16,7 @@ class Square():
     def size(self, value):
         if (type(value) is not int):
             raise TypeError("size must be an integer")
-        elif value < 0:
+        elif (value < 0):
             raise ValueError("size must be >= 0")
         self.__size = value
 

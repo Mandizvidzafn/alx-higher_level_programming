@@ -1,30 +1,35 @@
 #!/usr/bin/node
-const request = require('request');
-const url = 'http://swapi.co/api/films/';
-let id = parseInt(process.argv[2], 10);
-let characters = [];
+const fetch = require('node-fetch');
 
-request(url, function (err, response, body) {
-  if (err == null) {
-    const resp = JSON.parse(body);
-    const results = resp.results;
-    if (id < 4) {
-      id += 3;
-    } else {
-      id -= 3;
+// Get the movie ID from the command-line argument
+if (process.argv.length < 3) {
+  console.log('Usage: node script.js <movie_id>');
+  process.exit(1);
+}
+const movieId = process.argv[2];
+
+// Send a GET request to the Star Wars API
+const url = `https://swapi.dev/api/films/${movieId}/`;
+fetch(url)
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
-    for (let i = 0; i < results.length; i++) {
-      if (results[i].episode_id === id) {
-        characters = results[i].characters;
-        break;
+    return response.json();
+  })
+  .then(data => {
+    // Get the character URLs from the response and send a GET request for each character
+    const characterUrls = data.characters;
+    return Promise.all(characterUrls.map(url => fetch(url)));
+  })
+  .then(responses => {
+    // Print the character names from the responses
+    for (const response of responses) {
+      if (response.ok) {
+        response.json().then(data => console.log(data.name));
       }
     }
-    for (let j = 0; j < characters.length; j++) {
-      request(characters[j], function (err, response, body) {
-        if (err == null) {
-          console.log(JSON.parse(body).name);
-        }
-      });
-    }
-  }
-});
+  })
+  .catch(error => {
+    console.error(error);
+  });
